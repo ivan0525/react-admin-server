@@ -1,0 +1,39 @@
+{
+  "name": "react-admin-server",
+  "version": "1.0.0",
+  "description": "Support api to react-admin project",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "nodemon"
+  },
+  "keywords": [
+    "koa",
+    "typescript",
+    "nodejs",
+    "mongoDB"
+  ],
+  "author": "Ivan",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^3.0.7",
+    "class-transformer": "^0.2.3",
+    "class-validator": "^0.11.0",
+    "koa": "^2.11.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-logger": "^3.2.1",
+    "koa-router": "^7.4.0",
+    "mongodb": "^3.4.1",
+    "routing-controllers": "^0.8.0",
+    "typeorm": "^0.2.22"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.11.0",
+    "@types/koa-bodyparser": "^4.3.0",
+    "@types/koa-logger": "^3.1.1",
+    "@types/koa-router": "^7.0.42",
+    "pm2": "^4.2.1",
+    "reflect-metadata": "^0.1.13",
+    "ts-node": "^8.5.4",
+    "typescript": "^3.7.4"
+  }
+}
