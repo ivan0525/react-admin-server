@@ -1,14 +1,12 @@
 
 import { MinLength, IsNotEmpty } from 'class-validator'
-import { Entity, CreateDateColumn, ObjectIdColumn, Column, BaseEntity } from 'typeorm'
+import { Entity, CreateDateColumn, ObjectID, ObjectIdColumn, Column, BaseEntity } from 'typeorm'
+import { Transform } from 'class-transformer'
 
 @Entity('user')
 export class User extends BaseEntity {
   @ObjectIdColumn()
-  id!: string;
-
-  @ObjectIdColumn({ name: 'id' })
-  _id!: string;
+  id: ObjectID;
 
   @MinLength(4)
   @Column()
