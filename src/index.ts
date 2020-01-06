@@ -1,8 +1,10 @@
+import 'reflect-metadata'
 import { Server } from 'http'
 import * as Koa from 'koa'
+import { Container } from 'typedi'
 import { routingConfigs } from '../config/routing.options'
 import { useMiddlewares } from '../config/koa.middlewares'
-import { useKoaServer } from 'routing-controllers'
+import { useKoaServer, useContainer } from 'routing-controllers'
 import { print } from '../config/utils'
 
 require('./../config/connection')
@@ -12,6 +14,7 @@ async function createServer(): Promise<Koa> {
   useMiddlewares(koa)
 
   const app: Koa = useKoaServer<Koa>(koa, routingConfigs)
+  useContainer(Container)
   return app
 }
 
