@@ -13,8 +13,6 @@ import { Context } from 'koa'
 export class UserController {
   constructor(private userService: UserService) { }
 
-  @Header('access-control-allow-headers', 'X-Requested-With,Content-Type')
-  @Header('access-Control-Allow-Origin', '*')
   @Get('/test')
   public test(@Ctx() ctx: Context) {
     ctx.request.accepts('application/json')

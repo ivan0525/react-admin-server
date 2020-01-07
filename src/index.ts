@@ -22,7 +22,7 @@ module.exports = (async (): Promise<Server> => {
   try {
     const app = await createServer()
     return app.listen(3600, () => {
-      print.log(`Server listening on 3600, in dev mode`)
+      print.log('Server listening on 3600, in dev mode')
     })
   } catch (err) {
     console.log(err)
