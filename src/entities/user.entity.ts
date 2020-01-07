@@ -7,7 +7,7 @@ import { ObjectID } from "mongodb";
 export class User extends BaseEntity {
 
   @ObjectIdColumn()
-  _id!: ObjectID
+  _id: ObjectID
 
   @MinLength(4)
   @Column()

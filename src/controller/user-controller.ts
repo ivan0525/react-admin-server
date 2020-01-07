@@ -1,15 +1,24 @@
-import { Body, JsonController, Post, Get, QueryParam } from 'routing-controllers'
+import { Body, JsonController, Post, Get, Header, Ctx, Param, Put } from 'routing-controllers'
 import { ObjectID } from 'mongodb'
-import { getMongoRepository, getRepository } from 'typeorm'
+import { getMongoRepository } from 'typeorm'
 import { UserService } from '../service/user-service'
 import { User } from '../entities'
 import { hashSync } from 'bcrypt'
-@JsonController()
+import { Context } from 'koa'
+
+/**
+ * e.g. api => http://localhost:3600/api/user/*
+ */
+@JsonController('/user')
 export class UserController {
   constructor(private userService: UserService) { }
 
+  @Header('access-control-allow-headers', 'X-Requested-With,Content-Type')
+  @Header('access-Control-Allow-Origin', '*')
   @Get('/test')
-  test() {
+  public test(@Ctx() ctx: Context) {
+    ctx.request.accepts('application/json')
+    console.log(ctx.request.accept)
     return {
       message: 'test'
     }
@@ -20,7 +29,7 @@ export class UserController {
    * @param user {User} - user's info
    */
   @Post('/register')
-  async register(@Body() user: User): Promise<any> {
+  public async register(@Body() user: User): Promise<any> {
     try {
       const exitUser = await User.findOne({ username: user.username })
       if (exitUser) {
@@ -52,19 +61,20 @@ export class UserController {
    * Get user info by id
    * @param id {string} - user id
    */
-  @Get('/getUserInfoById')
-  async getUserInfoById(@QueryParam('id') id: string): Promise<any> {
+  @Get('/getUserInfoById/:id')
+  public async getUserInfoById(@Param('id') id: string) {
     const objectId = new ObjectID(id)
-    console.log(objectId)
     const userRepository = getMongoRepository(User)
-    const matchedUser = await userRepository.findOne({ _id: objectId })
-    console.log(matchedUser)
-    return {
-      message: '处理成功',
-      result: matchedUser || null
-    }
+    return userRepository.findOne({ _id: objectId })
   }
 }
+
+/**
+ * Update user info by id
+ * @param user {User} - user info object
+ */
+// @Put('/updateUserInfoById/:id')
+// public async updateUserInfoById()
 
 export interface IloginForm {
   username: string
