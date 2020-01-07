@@ -42,6 +42,12 @@ export class UserController {
     }
   }
 
+  @Post('/login')
+  async login(@Body() form: IloginForm) {
+    const userRepository = getMongoRepository(User)
+    // const matchedUser = await
+  }
+
   /**
    * Get user info by id
    * @param id {string} - user id
@@ -51,11 +57,16 @@ export class UserController {
     const objectId = new ObjectID(id)
     console.log(objectId)
     const userRepository = getMongoRepository(User)
-    const matchedUser = await userRepository.findOne({ _id: objectId } as any)
+    const matchedUser = await userRepository.findOne({ _id: objectId })
     console.log(matchedUser)
     return {
       message: '处理成功',
       result: matchedUser || null
     }
   }
+}
+
+export interface IloginForm {
+  username: string
+  password: string
 }
