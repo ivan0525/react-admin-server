@@ -17,6 +17,6 @@ export class User extends BaseEntity {
   @Column()
   password: string
 
-  @CreateDateColumn({ type: 'datetime' })
+  @CreateDateColumn()
   createDate: Date
 }
