@@ -51,9 +51,7 @@ export class UserController {
    */
   @Put('/updateUserInfoById/:id')
   public async updateUserInfoById(@Param('id') id: string, @Body() user: User) {
-    const objectId = new ObjectID(id)
-    const userRepository = getMongoRepository(User)
-    return userRepository.findOneAndUpdate({ _id: objectId }, user)
+    return this.userService.updateUser(id, user)
   }
 
   /**

@@ -45,20 +45,21 @@ export class UserService {
     const [matchedUser] = await userRepository.find({
       where: { username }
     })
-    const { password: hash } = matchedUser
-    const isMatch = await compare(password, hash)
-    const payload = only(matchedUser, ['_id', 'username', 'createDate'])
-    if (isMatch) {
-      const token = sign(payload, 'secret', { expiresIn: '1 day' })
-      return {
-        message: '处理成功',
-        result: payload,
-        token: 'Bearer ' + token
+    if (matchedUser) {
+      const { password: hash } = matchedUser
+      const isMatch = await compare(password, hash)
+      const payload = only(matchedUser, ['_id', 'username', 'createDate'])
+      if (isMatch) {
+        const token = sign(payload, 'secret', { expiresIn: '1 day' })
+        return {
+          message: '处理成功',
+          result: payload,
+          token: 'Bearer ' + token
+        }
       }
-    } else {
-      return {
-        message: '账号或密码错误'
-      }
+    }
+    return {
+      message: '账号或密码错误'
     }
   }
 
@@ -87,6 +88,20 @@ export class UserService {
     return {
       message: '删除成功',
       status: 'success'
+    }
+  }
+
+  /**
+   * Update user info
+   * @param id {string}
+   * @param user {User}
+   */
+  async updateUser(id: string, user: User): Promise<Iresult> {
+    const objectId = new ObjectID(id)
+    const userRepository = getMongoRepository(User)
+    await userRepository.update({ _id: objectId }, user)
+    return {
+      message: '更新成功'
     }
   }
 }
