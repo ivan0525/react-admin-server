@@ -1,11 +1,16 @@
 import { User } from '../entities'
 import { ObjectID } from 'mongodb'
 import { getMongoRepository } from 'typeorm'
-import { hashSync } from 'bcrypt'
+import { hashSync, compare } from 'bcrypt'
+import { sign } from 'jsonwebtoken'
+import { IloginForm } from '../controller/user-controller'
+import { only } from '../../utils'
 
 export interface Iresult {
   message: string
-  result: any
+  result?: any
+  status?: string
+  token?: string
 }
 export class UserService {
   // 创建用户
@@ -32,7 +37,33 @@ export class UserService {
   }
 
   /**
-   * find user
+   *
+   * @param id
+   */
+  async doLogin({ username, password }: IloginForm): Promise<Iresult> {
+    const userRepository = getMongoRepository(User)
+    const [matchedUser] = await userRepository.find({
+      where: { username }
+    })
+    const { password: hash } = matchedUser
+    const isMatch = await compare(password, hash)
+    const payload = only(matchedUser, ['_id', 'username', 'createDate'])
+    if (isMatch) {
+      const token = sign(payload, 'secret', { expiresIn: '1 day' })
+      return {
+        message: '处理成功',
+        result: payload,
+        token: 'Bearer ' + token
+      }
+    } else {
+      return {
+        message: '账号或密码错误'
+      }
+    }
+  }
+
+  /**
+   * Find user
    * @param id {string} - user id
    */
   async getUser(id: string): Promise<Iresult> {
@@ -42,6 +73,20 @@ export class UserService {
     return {
       message: '处理成功',
       result
+    }
+  }
+
+  /**
+   * Delete user
+   * @param id {string} - user id
+   */
+  async deleteUser(id: string): Promise<Iresult> {
+    const objectId = new ObjectID(id)
+    const userRepository = getMongoRepository(User)
+    await userRepository.deleteOne({ _id: objectId })
+    return {
+      message: '删除成功',
+      status: 'success'
     }
   }
 }

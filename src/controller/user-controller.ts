@@ -30,9 +30,10 @@ export class UserController {
   }
 
   @Post('/login')
-  async login(@Body() form: IloginForm) {
-    const userRepository = getMongoRepository(User)
+  public login(@Body() form: IloginForm) {
+    // const userRepository = getMongoRepository(User)
     // const matchedUser = await
+    return this.userService.doLogin(form)
   }
 
   /**
@@ -61,14 +62,7 @@ export class UserController {
    */
   @Delete('/deleteUserById/:id')
   public async deleteUserById(@Param('id') id: string) {
-    const objectId = new ObjectID(id)
-    console.log(objectId)
-    const userRepository = getMongoRepository(User)
-    userRepository.deleteOne({ _id: objectId })
-    return {
-      message: '删除成功',
-      status: 'success'
-    }
+    return this.userService.deleteUser(id)
   }
 }
 

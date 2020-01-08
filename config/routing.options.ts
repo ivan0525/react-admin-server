@@ -2,7 +2,7 @@ import { RoutingControllersOptions } from 'routing-controllers'
 import * as controllers from '../src/controller'
 import * as middleware from './routing.middlewares'
 import * as interceptors from './interceptors'
-import { dictToArray } from './utils'
+import { dictToArray } from './../utils'
 export const routingConfigs: RoutingControllersOptions = {
   controllers: dictToArray(controllers),
   middlewares: dictToArray(middleware),

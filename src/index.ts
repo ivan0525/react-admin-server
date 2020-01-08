@@ -5,7 +5,7 @@ import { Container } from 'typedi'
 import { routingConfigs } from '../config/routing.options'
 import { useMiddlewares } from '../config/koa.middlewares'
 import { useKoaServer, useContainer } from 'routing-controllers'
-import { print } from '../config/utils'
+import { print } from '../utils/index'
 
 require('./../config/connection')
 
