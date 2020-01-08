@@ -1,6 +1,6 @@
 {
   "type": "mongodb",
-  "url": "mongodb://localhost:27017/test_database",
+  "url": "mongodb://admin:admin123456@ds145329.mlab.com:45329/react-admin",
   "useUnifiedTopology": true,
   "entities": ["src/entities/*.entity.ts"]
 }
