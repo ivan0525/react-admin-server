@@ -1,6 +1,6 @@
 {
   "type": "mongodb",
-  "url": "mongodb://localhost:27017/",
+  "url": "mongodb://localhost:27017/test_database",
   "useUnifiedTopology": true,
   "entities": ["src/entities/*.entity.ts"]
 }
