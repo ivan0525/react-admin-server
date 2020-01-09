@@ -1,6 +1,4 @@
-import { Body, JsonController, Post, Get, Header, Ctx, Param, Put, Delete } from 'routing-controllers'
-import { ObjectID } from 'mongodb'
-import { getMongoRepository } from 'typeorm'
+import { Body, JsonController, Post, Get, QueryParams, Ctx, Param, Put, Delete } from 'routing-controllers'
 import { UserService } from '../service/user-service'
 import { User } from '../entities'
 import { Context } from 'koa'
@@ -18,6 +16,12 @@ export class UserController {
     return {
       message: 'test'
     }
+  }
+
+
+  @Get('/list')
+  public list(@QueryParams() params: IqueryParams) {
+    return this.userService.getList(params)
   }
 
   /**
@@ -67,4 +71,12 @@ export class UserController {
 export interface IloginForm {
   username: string
   password: string
+}
+
+export interface IqueryParams {
+  username?: string
+  createDate?: string
+  pageSize?: number
+  pageCount?: number
+  currentPage?: number
 }

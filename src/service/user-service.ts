@@ -3,7 +3,7 @@ import { ObjectID } from 'mongodb'
 import { getMongoRepository } from 'typeorm'
 import { hashSync, compare } from 'bcrypt'
 import { sign } from 'jsonwebtoken'
-import { IloginForm } from '../controller/user-controller'
+import { IloginForm, IqueryParams } from '../controller/user-controller'
 import { only } from '../../utils'
 
 export interface Iresult {
@@ -13,6 +13,21 @@ export interface Iresult {
   token?: string
 }
 export class UserService {
+  // 查询列表
+  async getList(form: IqueryParams): Promise<Iresult> {
+    const userRepository = await getMongoRepository(User)
+    // 查询出的数据和数据量
+    const [items, totalCount] = await userRepository.findAndCount({ where: { username: form.username } })
+    return {
+      message: '处理成功',
+      result: {
+        items,
+        totalCount
+      }
+    }
+  }
+
+
   // 创建用户
   async addUser(user: User): Promise<Iresult> {
     try {
