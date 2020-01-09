@@ -1,4 +1,14 @@
-import { Body, JsonController, Post, Get, QueryParams, Ctx, Param, Put, Delete } from 'routing-controllers'
+import {
+  Body,
+  JsonController,
+  Post,
+  Get,
+  QueryParams,
+  Ctx,
+  Param,
+  Put,
+  Delete
+} from 'routing-controllers'
 import { UserService } from '../service/user-service'
 import { User } from '../entities'
 import { Context } from 'koa'
@@ -8,16 +18,15 @@ import { Context } from 'koa'
  */
 @JsonController('/user')
 export class UserController {
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {}
 
   @Get('/test')
   public test(@Ctx() ctx: Context) {
-    console.log(ctx.request.accept)
     return {
-      message: 'test'
+      message: 'test',
+      status: 'C0000'
     }
   }
-
 
   @Get('/list')
   public list(@QueryParams() params: IqueryParams) {
@@ -35,8 +44,6 @@ export class UserController {
 
   @Post('/login')
   public login(@Body() form: IloginForm) {
-    // const userRepository = getMongoRepository(User)
-    // const matchedUser = await
     return this.userService.doLogin(form)
   }
 

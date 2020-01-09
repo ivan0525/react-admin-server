@@ -1,7 +1,7 @@
 import { User } from '../entities'
 import { ObjectID } from 'mongodb'
 import { getMongoRepository } from 'typeorm'
-import { hashSync, compare } from 'bcrypt'
+import { hashSync, compareSync } from 'bcrypt'
 import { sign } from 'jsonwebtoken'
 import { IloginForm, IqueryParams } from '../controller/user-controller'
 import { only } from '../../utils'
@@ -17,7 +17,9 @@ export class UserService {
   async getList(form: IqueryParams): Promise<Iresult> {
     const userRepository = await getMongoRepository(User)
     // 查询出的数据和数据量
-    const [items, totalCount] = await userRepository.findAndCount({ where: { username: form.username } })
+    const [items, totalCount] = await userRepository.findAndCount({
+      where: { username: form.username }
+    })
     return {
       message: '处理成功',
       result: {
@@ -26,7 +28,6 @@ export class UserService {
       }
     }
   }
-
 
   // 创建用户
   async addUser(user: User): Promise<Iresult> {
@@ -62,19 +63,21 @@ export class UserService {
     })
     if (matchedUser) {
       const { password: hash } = matchedUser
-      const isMatch = await compare(password, hash)
+      const isMatch = compareSync(password, hash)
       const payload = only(matchedUser, ['_id', 'username', 'createDate'])
       if (isMatch) {
         const token = sign(payload, 'secret', { expiresIn: '1 day' })
         return {
           message: '处理成功',
+          status: 'C0000',
           result: payload,
           token: 'Bearer ' + token
         }
       }
     }
     return {
-      message: '账号或密码错误'
+      message: '账号或密码错误',
+      status: 'E0000'
     }
   }
 
