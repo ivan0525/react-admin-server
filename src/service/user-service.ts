@@ -70,7 +70,6 @@ export class UserService {
         return {
           message: '处理成功',
           status: 'C0000',
-          result: payload,
           token: 'Bearer ' + token
         }
       }
