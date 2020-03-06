@@ -17,8 +17,9 @@ export class UserService {
   async getList(form: IqueryParams): Promise<Iresult> {
     const userRepository = await getMongoRepository(User)
     // 查询出的数据和数据量
+    console.log(typeof form.pageSize)
     const [items, totalCount] = await userRepository.findAndCount({
-      where: { username: form.username }
+      take: form.pageSize ? +form.pageSize : 5
     })
     return {
       message: '处理成功',
@@ -66,7 +67,7 @@ export class UserService {
       const isMatch = compareSync(password, hash)
       const payload = only(matchedUser, ['_id', 'username', 'createDate'])
       if (isMatch) {
-        const token = sign(payload, 'secret', { expiresIn: '1 day' })
+        const token = sign(payload, 'secret', { expiresIn: '5' })
         return {
           message: '处理成功',
           status: 'C0000',
