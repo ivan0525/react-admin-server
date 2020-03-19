@@ -57,18 +57,17 @@ export class UserService {
    *
    * @param id
    */
-  async doLogin({ username, password }: IloginForm): Promise<Iresult> {
+  async doLogin({ email, password }: IloginForm): Promise<Iresult> {
     const userRepository = getMongoRepository(User)
     const [matchedUser] = await userRepository.find({
-      where: { username }
+      where: { email }
     })
     if (matchedUser) {
       const { password: hash } = matchedUser
       const isMatch = compareSync(password, hash)
-      const payload = only(matchedUser, ['_id', 'username', 'createDate'])
-      const _id = String(payload._id)
+      const payload = only(matchedUser, ['_id', 'username', 'email', 'createDate'])
       if (isMatch) {
-        const token = sign({ _id }, 'secret', { expiresIn: '7 days' })
+        const token = sign(payload, 'secret', { expiresIn: '7 days' })
         return {
           message: '处理成功',
           status: 'C0000',

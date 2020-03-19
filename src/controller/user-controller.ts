@@ -76,7 +76,7 @@ export class UserController {
 }
 
 export interface IloginForm {
-  username: string
+  email: string
   password: string
 }
 
