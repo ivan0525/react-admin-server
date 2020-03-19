@@ -66,12 +66,13 @@ export class UserService {
       const { password: hash } = matchedUser
       const isMatch = compareSync(password, hash)
       const payload = only(matchedUser, ['_id', 'username', 'createDate'])
+      const _id = String(payload._id)
       if (isMatch) {
-        const token = sign(payload, 'secret', { expiresIn: '5' })
+        const token = sign({ _id }, 'secret', { expiresIn: '7 days' })
         return {
           message: '处理成功',
           status: 'C0000',
-          token: 'Bearer ' + token
+          token: token
         }
       }
     }
