@@ -1,30 +1,34 @@
 import 'reflect-metadata'
-import { Server } from 'http'
 import * as Koa from 'koa'
 import { Container } from 'typedi'
-import { routingConfigs } from '../config/routing.options'
-import { useMiddlewares } from '../config/koa.middlewares'
 import { useKoaServer, useContainer } from 'routing-controllers'
-import { print } from '../utils/index'
+import * as logger from 'koa-logger'
+import * as bodyParser from 'koa-bodyparser'
+import * as controllers from '../src/controller'
+import * as middleware from './middleware'
+import { dictToArray } from '../utils'
 
-require('./../config/connection')
+// 必须在服务启动前使用
+useContainer(Container)
+// require('./../config/connection')
+const app = new Koa()
 
-async function createServer(): Promise<Koa> {
-  const koa = new Koa()
-  useMiddlewares(koa)
+// 使用中间件
+app.use(logger())
+app.use(bodyParser())
 
-  const app: Koa = useKoaServer<Koa>(koa, routingConfigs)
-  useContainer(Container)
-  return app
-}
+useKoaServer(app, {
+  controllers: dictToArray(controllers),
+  middlewares: dictToArray(middleware),
+  // router prefix
+  // e.g. api => http://hostname:port/{routePrefix}/{controller.method}
+  routePrefix: '/api',
 
-module.exports = (async (): Promise<Server> => {
-  try {
-    const app = await createServer()
-    return app.listen(3600, () => {
-      print.log('Server listening on 3600, in dev mode')
-    })
-  } catch (err) {
-    console.log(err)
-  }
-})()
+  // auto validate entity item
+  // learn more: https://github.com/typestack/class-validator
+  validation: true
+})
+
+app.listen(3600, () => {
+  console.info('Listening on port 3600')
+})
