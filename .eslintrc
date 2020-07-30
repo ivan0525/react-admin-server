@@ -5,7 +5,9 @@
   "rules": {
     "no-var": "error",
     "semi": ["error", "never"],
-    "quotes": ["error", "single"]
+    "no-empty": "error",
+    "quotes": ["error", "single"],
+    "block-spacing": 2
   },
   "env": {
     "browser": true,
