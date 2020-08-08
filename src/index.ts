@@ -10,7 +10,7 @@ import { dictToArray } from '../utils'
 
 // 必须在服务启动前使用
 useContainer(Container)
-// require('./../config/connection')
+require('./../config/connection')
 const app = new Koa()
 
 // 使用中间件
