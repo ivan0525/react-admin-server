@@ -3091,9 +3091,9 @@ supports-color@^7.1.0:
     has-flag "^4.0.0"
 
 systeminformation@^4.14.16:
-  version "4.16.1"
-  resolved "https://registry.npm.taobao.org/systeminformation/download/systeminformation-4.16.1.tgz#662beb2a820a311c242ae110285d80109286cffa"
-  integrity sha1-ZivrKoIKMRwkKuEQKF2AEJKGz/o=
+  version "4.34.19"
+  resolved "https://registry.yarnpkg.com/systeminformation/-/systeminformation-4.34.19.tgz#c5f066cc043482686d95bbc554d52e6ec9e42367"
+  integrity sha512-ssUYQ0s1FFeb8EGtyCX/41cC/XaF84gbNAUfaUTziibx+xCAaR0zrOy0yZlnUrsWDQ+snp/Utl8cx8IdtrevrA==
 
 table@^5.2.3:
   version "5.4.6"
